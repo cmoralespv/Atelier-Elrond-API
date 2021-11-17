@@ -4,6 +4,7 @@
 .vscode
 .env
 .env.*
+!.env.*example
 
 # Module management
 node_modules/

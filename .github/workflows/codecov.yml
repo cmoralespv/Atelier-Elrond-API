@@ -7,8 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  container-job:
     runs-on: ubuntu-latest
+    container: node:14
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 14.x
@@ -17,6 +29,6 @@ jobs:
         node-version: 14.x
         cache: npm
     - run: |
-        npm ci
-        npx jest --coverage --passWithNoTests
+        npm install
+        DB_URL=postgresql://postgres:postgres@postgres:5432 npx jest --coverage --passWithNoTests
         npx codecov

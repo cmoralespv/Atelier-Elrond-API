@@ -29,6 +29,6 @@ jobs:
         node-version: 14.x
         cache: npm
     - run: |
-        npm install
+        npm ci
         DB_URL=postgresql://postgres:postgres@postgres:5432 npx jest --coverage --passWithNoTests
         npx codecov

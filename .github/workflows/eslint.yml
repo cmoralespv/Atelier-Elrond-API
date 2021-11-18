@@ -18,4 +18,4 @@ jobs:
         cache: npm
     - run: |
         npm ci
-        npm eslint
+        npx eslint

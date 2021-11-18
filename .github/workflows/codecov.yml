@@ -1,4 +1,4 @@
-name: CodeCov
+name: Tests
 
 on:
   push:

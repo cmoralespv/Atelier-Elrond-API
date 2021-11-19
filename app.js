@@ -23,9 +23,9 @@ app.use(express.json());
 app.use(routes.get);
 app.use(routes.post);
 
-// app.get('/', (req, res) => {
-//   res.send('Hello world');
-// });
+app.get('/', (req, res) => {
+  res.send('Hello world');
+});
 
 if (HTTP_PORT) {
   http.createServer(app).listen(HTTP_PORT);

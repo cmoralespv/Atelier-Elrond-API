@@ -18,7 +18,7 @@ router.get('/reviews/', (req, res) => {
       OFFSET ${(page - 1) * count};`)
     .then(data => {
       res.send(data);
-      console.log(res.stausCode);
+      console.log(res.statusCode);
     })
     .catch(e => console.error(e.stack));
   //   ,
@@ -47,7 +47,7 @@ router.get('/reviews/meta', (req, res) => {
       LIMIT 1`)
     .then(data => {
       res.send(data);
-      console.log(res.stausCode);
+      console.log(res.statusCode);
     })
     .catch(e => console.error(e.stack));
 });

@@ -3,29 +3,53 @@ const sql = require('../../config/db_config');
 
 const router = express.Router();
 
+// Get List Reviews
 router.get('/reviews/', (req, res) => {
-  // console.log(req.query);
-
   const product_id = req.query.product_id;
   const page = req.query.page || 1;
   const count = req.query.count || 5;
 
   sql.query(
-    `SELECT id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, reported
+    `SELECT id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness,     reported
       FROM reviews
       WHERE product_id = ${product_id} AND reported = FALSE
       ORDER BY id ASC
       LIMIT ${count}
-      OFFSET ${page};`,
-    (err, res) => {
-      if (err) {
-        console.log(err.stack);
-      } else {
-        console.log(res);
-      }
-    });
+      OFFSET ${(page - 1) * count};`)
+    .then(data => {
+      res.send(data);
+      console.log(res.stausCode);
+    })
+    .catch(e => console.error(e.stack));
+  //     ,
+  //   (err, data) => {
+  //     if (err) {
+  //       console.log(err.stack);
+  //     } else {
+  //       console.log(data);
+  //       console.log(res.statusCode);
+  //     }
+  //   });
 
-  res.send('hello world');
+  // res.send('hello world');
+});
+
+// Get Review Metadata
+router.get('/reviews/meta', (req, res) => {
+  const product_id = req.query.product_id;
+
+  // WORK IN PROGRESS // EXPERIMENTING WITH PROMISES
+  sql
+    .query(`SELECT id, rating, recommend
+      FROM reviews
+      WHERE product_id = ${product_id}
+      ORDER BY id ASC
+      LIMIT 1`)
+    .then(data => {
+      res.send(data);
+      console.log(res.stausCode);
+    })
+    .catch(e => console.error(e.stack));
 });
 
 module.exports = router;

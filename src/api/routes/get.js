@@ -21,15 +21,15 @@ router.get('/reviews/', (req, res) => {
       console.log(res.stausCode);
     })
     .catch(e => console.error(e.stack));
-  //     ,
-  //   (err, data) => {
-  //     if (err) {
-  //       console.log(err.stack);
-  //     } else {
-  //       console.log(data);
-  //       console.log(res.statusCode);
-  //     }
-  //   });
+  //   ,
+  // (err, data) => {
+  //   if (err) {
+  //     console.log(err.stack);
+  //   } else {
+  //     console.log(data);
+  //     console.log(res.statusCode);
+  //   }
+  // });
 
   // res.send('hello world');
 });

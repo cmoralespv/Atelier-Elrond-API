@@ -12,10 +12,4 @@ const sql = new Client(process.env.DB_URL);
 
 sql.connect();
 
-sql.query('SELECT $1::text as message', ['Hello world, connected to database!'], (err, res) => {
-  console.log(err ? err.stack : res.rows[0].message); // Hello World!
-});
-
 module.exports = sql;
-
-

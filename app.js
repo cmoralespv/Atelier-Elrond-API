@@ -7,6 +7,14 @@ const https = require('https');
 
 dotenv.config();
 
+const sql = require('./src/config/db_config');
+
+if (process.env.HTTP_PORT) {
+  sql.query('SELECT $1::text as message', ['Hello world, connected to database!'], (err, res) => {
+    console.log(err ? err.stack : res.rows[0].message); // Hello World!
+  });
+}
+
 const routes = require('./src/api/routes');
 
 const {

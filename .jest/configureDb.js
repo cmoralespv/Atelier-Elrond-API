@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const sql = require('../src/config/db_config');
 
-beforeAll(() => {
+beforeAll(() =>
   sql.query(`
     CREATE TABLE IF NOT EXISTS reviews (
       id  serial  PRIMARY KEY,
@@ -33,12 +33,12 @@ beforeAll(() => {
       value  smallint
     )
   `)).then(() => sql.query(`
-    CREATE TABLE IF NOT EXISTS reviews_photos.csv (
+    CREATE TABLE IF NOT EXISTS reviews_photos (
       id serial PRIMARY KEY,
       review_id  serial,
       url  varchar(300)  NOT NULL
     )
-  `));
-});
+  `))
+);
 
-afterAll(() => sql.end());
+afterAll(done => sql.end(done));

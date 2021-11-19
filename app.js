@@ -7,6 +7,8 @@ const https = require('https');
 
 dotenv.config();
 
+const routes = require('./src/api/routes');
+
 const {
   HTTP_PORT,
   HTTPS_PORT,
@@ -18,9 +20,12 @@ const app = express();
 app.use(compression());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
+app.use(routes.get);
+app.use(routes.post);
+
+// app.get('/', (req, res) => {
+//   res.send('Hello world');
+// });
 
 if (HTTP_PORT) {
   http.createServer(app).listen(HTTP_PORT);

@@ -1,5 +1,6 @@
 const express = require('express');
 const sql = require('../../config/db_config');
+const { listReviews } = require('../helpers/list_reviews');
 
 const router = express.Router();
 
@@ -10,16 +11,30 @@ router.get('/reviews/', (req, res) => {
   const count = req.query.count || 5;
 
   sql.query(
-    `SELECT id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness,     reported
+    `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
       FROM reviews
       WHERE product_id = ${product_id} AND reported = FALSE
-      ORDER BY id ASC
+      ORDER BY review_id ASC
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
     .then(data => {
-      res.send(data);
-      console.log(res.statusCode);
+      const bar = new Promise((resolve, reject) => {
+        const result = listReviews(product_id, page, count, data);
+        if (result) {
+          resolve('yes');
+        } else {
+          reject(console.log('Error'));
+        }
+      });
+      bar.then((value) => {
+        console.log('asdfasdf', value);
+        res.send(value);
+      });
     })
+    // .then((result) => {
+    //   res.send(result);
+    //   console.log(res.statusCode);
+    // })
     .catch(e => console.error(e.stack));
   //   ,
   // (err, data) => {

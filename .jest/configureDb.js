@@ -5,7 +5,7 @@ const sql = require('../src/config/db_config');
 beforeAll(() =>
   sql.query(`
     CREATE TABLE IF NOT EXISTS reviews (
-      id  serial  PRIMARY KEY,
+      review_id  serial  PRIMARY KEY,
       product_Id  serial  NOT NULL,
       rating  smallint,
       date  bigint  NOT NULL,

@@ -1,6 +1,6 @@
 const express = require('express');
 const sql = require('../../config/db_config');
-const { listReviews } = require('../helpers/list_reviews');
+const { getReviews } = require('../helpers/get_reviews');
 
 const router = express.Router();
 
@@ -17,36 +17,14 @@ router.get('/reviews/', (req, res) => {
       ORDER BY review_id ASC
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
-    .then(data => {
-      const bar = new Promise((resolve, reject) => {
-        const result = listReviews(product_id, page, count, data);
-        if (result) {
-          resolve('yes');
-        } else {
-          reject(console.log('Error'));
-        }
-      });
-      bar.then((value) => {
-        console.log('asdfasdf', value);
-        res.send(value);
-      });
-    })
-    // .then((result) => {
-    //   res.send(result);
-    //   console.log(res.statusCode);
-    // })
+    .then(data => getReviews(data))
+    .then(result => res.send({
+      product_id,
+      page,
+      count,
+      result
+    }))
     .catch(e => console.error(e.stack));
-  //   ,
-  // (err, data) => {
-  //   if (err) {
-  //     console.log(err.stack);
-  //   } else {
-  //     console.log(data);
-  //     console.log(res.statusCode);
-  //   }
-  // });
-
-  // res.send('hello world');
 });
 
 // Get Review Metadata

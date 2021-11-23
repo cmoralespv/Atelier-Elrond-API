@@ -34,13 +34,12 @@ router.get('/reviews/meta', (req, res) => {
   // WORK IN PROGRESS // EXPERIMENTING WITH PROMISES
   sql
     .query(`SELECT
-      json_build_object('product_id', ${product_id},
-      'ratings', (select json_build_object(
-        '1', getRatingsCount(${product_id}, 1),
-        '2', getRatingsCount(${product_id}, 2),
-        '3', getRatingsCount(${product_id}, 3),
-        '4', getRatingsCount(${product_id}, 4),
-        '5', getRatingsCount(${product_id}, 5))),
+    json_build_object('product_id', ${product_id}::text,
+    'ratings', (select json_object_agg(rating, count)
+      FROM (select distinct rating, count(rating)
+        FROM reviews
+        WHERE product_id = ${product_id}
+        group by rating) AS counts),
       'recommended', (select json_build_object(
         'false', getRecommendedCount(${product_id}, false),
         'true', getRecommendedCount(${product_id}, true))),

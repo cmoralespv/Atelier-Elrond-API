@@ -1,6 +1,6 @@
 CREATE TABLE reviews (
-  id  serial  PRIMARY KEY,
-  product_Id  serial  NOT NULL,
+  review_id  serial  PRIMARY KEY,
+  product_Id  integer  NOT NULL,
   rating  smallint,
   date  bigint  NOT NULL,
   summary  varchar(60)  NOT NULL,

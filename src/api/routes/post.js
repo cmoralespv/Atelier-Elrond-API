@@ -3,6 +3,8 @@ const sql = require('../../config/db_config');
 
 const router = express.Router();
 
+// ROUTE FOR: ADD A REVIEW
+
 router.post('/reviews/', (req, res) => {
   const product_id = req.body.product_id;
   const rating = req.body.rating;
@@ -11,7 +13,10 @@ router.post('/reviews/', (req, res) => {
   const recommend = req.body.recommend;
   const reviewer_name = req.body.name;
   const reviewer_email = req.body.email;
-  const photos = req.body.photos;
+  const photos = [];
+  req.body.photos.forEach((photo) => {
+    photos.push(`'${photo}'`);
+  });
   const characteristics = JSON.stringify(req.body.characteristics);
 
   console.log(typeof characteristics);
@@ -31,7 +36,7 @@ router.post('/reviews/', (req, res) => {
         (review_id, url)
       SELECT review_id, url
       FROM review
-      CROSS JOIN UNNEST (ARRAY ['${photos}']::VARCHAR[]) AS t (url)
+      CROSS JOIN UNNEST (ARRAY [${photos}]::VARCHAR[]) AS t (url)
       RETURNING id)
     INSERT INTO characteristic_reviews
       (review_id, characteristic_id, value)
@@ -42,6 +47,30 @@ router.post('/reviews/', (req, res) => {
           json_data.value::text::smallint AS value
           FROM json_each('${characteristics}') AS json_data) as t;`)
     .then(data => res.sendStatus(201))
+    .catch(e => console.error(e.stack));
+});
+
+// ROUTE FOR: MARK AS HELPFUL
+
+router.put('/reviews/:review_id/helpful', (req, res) => {
+  const review_id = req.params.review_id;
+
+  sql.query(
+    `UPDATE reviews SET helpfulness = helpfulness+1
+    WHERE review_id = ${review_id};`)
+    .then(data => res.sendStatus(204))
+    .catch(e => console.error(e.stack));
+});
+
+// ROUTE FOR: REPORT
+
+router.put('/reviews/:review_id/report', (req, res) => {
+  const review_id = req.params.review_id;
+
+  sql.query(
+    `UPDATE reviews SET reported = NOT reported
+    WHERE review_id = ${review_id};`)
+    .then(data => res.sendStatus(204))
     .catch(e => console.error(e.stack));
 });
 

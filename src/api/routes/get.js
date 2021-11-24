@@ -9,18 +9,38 @@ router.get('/reviews/', (req, res) => {
   const product_id = req.query.product_id;
   const page = req.query.page || 1;
   const count = req.query.count || 5;
+  const sortOption = req.query.sort;
+  let sort = '';
+
+  console.log('sort', req.query.sort);
+  console.log(typeof req.query.sort);
+
+  const sortList = (option) => {
+    console.log('option', option);
+    if (option === 'newest') {
+      sort = 'date DESC';
+    } else if (option === 'helpful') {
+      sort = 'helpfulness DESC';
+    } else {
+      sort = 'date DESC, helpfulness DESC';
+    }
+  };
+
+  sortList(sortOption);
+
+  console.log(sort);
 
   sql.query(
     `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
       FROM reviews
       WHERE product_id = ${product_id} AND reported = FALSE
-      ORDER BY review_id ASC
+      ORDER BY ${sort}
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
     .then(data => getReviews(data))
     .then(result => res.send({
       product_id,
-      page,
+      page: (page - 1) * count,
       count,
       result
     }))

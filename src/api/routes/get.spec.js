@@ -99,14 +99,6 @@ describe('GET - List Reviews ** Results*', () => {
   });
 });
 
-
-
-
-
-
-
-
-
 // GET METADATA FOR REVIEWS TESTING
 describe('GET - Metadata', () => {
   it('should respond with status code 200 if the request was successful', async () => {

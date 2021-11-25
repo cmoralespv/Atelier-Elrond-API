@@ -12,23 +12,17 @@ router.get('/reviews/', (req, res) => {
   const sortOption = req.query.sort;
   let sort = '';
 
-  console.log('sort', req.query.sort);
-  console.log(typeof req.query.sort);
-
   const sortList = (option) => {
-    console.log('option', option);
     if (option === 'newest') {
       sort = 'date DESC';
     } else if (option === 'helpful') {
       sort = 'helpfulness DESC';
     } else {
-      sort = 'date DESC, helpfulness DESC';
+      sort = 'helpfulness DESC, date DESC';
     }
   };
 
   sortList(sortOption);
-
-  console.log(sort);
 
   sql.query(
     `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
@@ -40,18 +34,17 @@ router.get('/reviews/', (req, res) => {
     .then(data => getReviews(data))
     .then(result => res.send({
       product_id,
-      page: (page - 1) * count,
+      page, // :(page - 1) * count, - heroku version that doesn't make sense
       count,
       result
     }))
-    .catch(e => console.error(e.stack));
+    .catch(e => res.sendStatus(404));
 });
 
 // Get Review Metadata
 router.get('/reviews/meta', (req, res) => {
   const product_id = req.query.product_id;
 
-  // WORK IN PROGRESS // EXPERIMENTING WITH PROMISES
   sql
     .query(`SELECT
     json_build_object('product_id', ${product_id}::text,
@@ -69,7 +62,7 @@ router.get('/reviews/meta', (req, res) => {
           FROM characteristics
           WHERE product_id = ${product_id}))`)
     .then(result => res.send(result.rows[0].json_build_object))
-    .catch(e => console.error(e.stack));
+    .catch(e => res.sendStatus(404));
 });
 
 module.exports = router;

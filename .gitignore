@@ -38,6 +38,3 @@ pids
 
 # Output of 'npm pack'
 *.tgz
-
-# Until I have a better grasp of it
-.github/workflows/codecov.yml

@@ -25,8 +25,8 @@ describe('PUT - Updates helpfulness count on click', () => {
       .get(`/reviews?product_id=${newPost.product_id}&count=10`)
       .expect(200);
 
-    const setOfReviews = body.result.map(review => review.review_id);
-    const helpfulnessOfReviews = body.result.map(review => review.helpfulness);
+    const setOfReviews = body.results.map(review => review.review_id);
+    const helpfulnessOfReviews = body.results.map(review => review.helpfulness);
 
     (() => {
       evaluationIndex = Math.floor(Math.random() * (setOfReviews.length - 1));
@@ -62,7 +62,7 @@ describe('PUT - Flags a review as reported on click', () => {
       .get(`/reviews?product_id=${newPost.product_id}&count=10`)
       .expect(200);
 
-    const setOfReviews = body.result.map(review => review.review_id);
+    const setOfReviews = body.results.map(review => review.review_id);
 
     (() => {
       evaluationIndex = Math.floor(Math.random() * (setOfReviews.length - 1));
@@ -95,9 +95,9 @@ describe('PUT - Flags a review as reported on click', () => {
     const { body } = await request(app)
       // increase count when timeout works
       .get(`/reviews?product_id=${newPost.product_id}&count=10`)
-      .expect(204);
+      .expect(200);
 
-    const matchingReviews = body.result.filter(review =>
+    const matchingReviews = body.results.filter(review =>
       review.review_id === randomlyChosenReview);
 
     expect(matchingReviews.length).toEqual(0);

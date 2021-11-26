@@ -19,11 +19,6 @@ router.post('/reviews/', (req, res) => {
   });
   const characteristics = JSON.stringify(req.body.characteristics);
 
-  console.log(typeof characteristics);
-  console.log('charac', characteristics);
-
-  console.log('1', product_id, '2', rating, '3', summary, '4', body, '5', recommend, '6', reviewer_name, '7', reviewer_email, '8', photos, '9', characteristics);
-
   sql.query(
     `WITH review AS (
       INSERT INTO reviews
@@ -47,30 +42,6 @@ router.post('/reviews/', (req, res) => {
           json_data.value::text::smallint AS value
           FROM json_each('${characteristics}') AS json_data) as t;`)
     .then(data => res.sendStatus(201))
-    .catch(e => console.error(e.stack));
-});
-
-// ROUTE FOR: MARK AS HELPFUL
-
-router.put('/reviews/:review_id/helpful', (req, res) => {
-  const review_id = req.params.review_id;
-
-  sql.query(
-    `UPDATE reviews SET helpfulness = helpfulness+1
-    WHERE review_id = ${review_id};`)
-    .then(data => res.sendStatus(204))
-    .catch(e => console.error(e.stack));
-});
-
-// ROUTE FOR: REPORT
-
-router.put('/reviews/:review_id/report', (req, res) => {
-  const review_id = req.params.review_id;
-
-  sql.query(
-    `UPDATE reviews SET reported = NOT reported
-    WHERE review_id = ${review_id};`)
-    .then(data => res.sendStatus(204))
     .catch(e => console.error(e.stack));
 });
 

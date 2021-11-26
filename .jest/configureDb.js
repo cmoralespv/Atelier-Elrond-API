@@ -9,7 +9,7 @@ const body = 'body success';
 const recommend = true;
 const reviewer_name = 'tester';
 const reviewer_email = 'tester@jest.com';
-const photos = `['url1', 'url2', 'url3', 'url4', 'url5']`;
+const photos = "['url1', 'url2', 'url3', 'url4', 'url5']";
 const characteristics = '{"101":2,"102":3,"103":2,"104":4}';
 
 beforeAll(() =>

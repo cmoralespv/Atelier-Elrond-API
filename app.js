@@ -28,6 +28,7 @@ app.use(express.json());
 
 app.use(routes.get);
 app.use(routes.post);
+app.use(routes.put);
 
 // app.get('/', (req, res) => {
 //   res.send('Hello world');

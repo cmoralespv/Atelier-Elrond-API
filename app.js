@@ -36,6 +36,7 @@ app.use(routes.put);
 
 if (HTTP_PORT) {
   http.createServer(app).listen(HTTP_PORT);
+  console.log(`server listening on port ${HTTP_PORT}`);
 }
 
 if (HTTPS_PORT) {

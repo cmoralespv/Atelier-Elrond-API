@@ -9,7 +9,7 @@ router.get('/reviews/', (req, res) => {
   const product_id = req.query.product_id;
   const page = req.query.page || 1;
   const count = req.query.count || 5;
-  const sortOption = req.query.sort;
+  const sortOption = req.query.sort || 'relevant';
   let sort = '';
 
   const sortList = (option) => {
@@ -32,11 +32,11 @@ router.get('/reviews/', (req, res) => {
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
     .then(data => getReviews(data))
-    .then(result => res.send({
+    .then(results => res.json({
       product_id,
       page, // :(page - 1) * count, - heroku version that doesn't make sense
       count,
-      result
+      results
     }))
     .catch(e => res.sendStatus(404));
 });
@@ -61,7 +61,7 @@ router.get('/reviews/meta', (req, res) => {
         'value', getAverage(id)))
           FROM characteristics
           WHERE product_id = ${product_id}))`)
-    .then(result => res.send(result.rows[0].json_build_object))
+    .then(result => res.json(result.rows[0].json_build_object))
     .catch(e => res.sendStatus(404));
 });
 

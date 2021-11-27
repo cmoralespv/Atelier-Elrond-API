@@ -38,10 +38,10 @@ describe('GET - List Reviews', () => {
       .get(`/reviews?product_id=${pid}`)
       .expect(200);
 
-    const { product_id, result, page, count } = body;
+    const { product_id, results, page, count } = body;
 
     expect(product_id).toEqual('90');
-    expect(Array.isArray(result)).toBe(true);
+    expect(Array.isArray(results)).toBe(true);
     expect(page).toBe(1);
     expect(count).toBe(5);
   });
@@ -51,10 +51,10 @@ describe('GET - List Reviews', () => {
       .get(`/reviews?product_id=${pid}&page=2&count=10&sort=helpful`)
       .expect(200);
 
-    const { product_id, result, page, count } = body;
+    const { product_id, results, page, count } = body;
 
     expect(product_id).toEqual('90');
-    expect(Array.isArray(result)).toBe(true);
+    expect(Array.isArray(results)).toBe(true);
     expect(Number(page)).toEqual(2);
     expect(Number(count)).toEqual(10);
   });
@@ -66,7 +66,7 @@ describe('GET - List Reviews ** Results*', () => {
     const { body } = await request(app)
       .get(`/reviews?product_id=${pid}`);
 
-    const { summary, body: reviewBody, recommend, date, response, reviewer_name, helpfulness, photos } = body.result[0];
+    const { summary, body: reviewBody, recommend, date, response, reviewer_name, helpfulness, photos } = body.results[0];
 
     expect(summary).toEqual('Rerum alias mollitia maiores tempore provident nostrum.');
     expect(reviewBody.includes('laudantium incidunt est explicabo aut')).toEqual(true);
@@ -83,7 +83,7 @@ describe('GET - List Reviews ** Results*', () => {
     const { body } = await request(app)
       .get(`/reviews?product_id=${pid}`);
 
-    const { photos } = body.result[0];
+    const { photos } = body.results[0];
 
     expect(typeof photos[0].id).toEqual('number');
     expect(photos[0].url.includes('http')).toEqual(true);
@@ -93,7 +93,7 @@ describe('GET - List Reviews ** Results*', () => {
     const { body } = await request(app)
       .get(`/reviews?product_id=${pid}`);
 
-    const { photos } = body.result[1];
+    const { photos } = body.results[1];
 
     expect(photos.length).toEqual(0);
   });

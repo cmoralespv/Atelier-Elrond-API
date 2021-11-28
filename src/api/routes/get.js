@@ -1,6 +1,5 @@
 const express = require('express');
 const sql = require('../../config/db_config');
-const { getReviews } = require('../helpers/get_reviews');
 
 const router = express.Router();
 
@@ -25,14 +24,26 @@ router.get('/reviews/', (req, res) => {
   sortList(sortOption);
 
   sql.query(
-    `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
+    `SELECT review_id, rating, summary, recommend, response,
+     body, date, reviewer_name, helpfulness,
+       (SELECT coalesce (json_agg(json_build_object('id',id,'url',url)), '[]'::json)
+         from reviews_photos
+         where review_id = reviews.review_id) as photos
       FROM reviews
       WHERE product_id = ${product_id} AND reported = FALSE
       ORDER BY ${sort}
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
-    .then(data => getReviews(data))
-    .then(results => res.json({
+
+    // `SELECT review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
+    //   FROM reviews
+    //   WHERE product_id = ${product_id} AND reported = FALSE
+    //   ORDER BY ${sort}
+    //   LIMIT ${count}
+    //   OFFSET ${(page - 1) * count};`)
+    // .then(data => getReviews(data))
+    .then(results => results.rows)
+    .then(results => res.send({
       product_id,
       page, // :(page - 1) * count, - heroku version that doesn't make sense
       count,
@@ -61,7 +72,7 @@ router.get('/reviews/meta', (req, res) => {
         'value', getAverage(id)))
           FROM characteristics
           WHERE product_id = ${product_id}))`)
-    .then(result => res.json(result.rows[0].json_build_object))
+    .then(results => res.send(results.rows[0].json_build_object))
     .catch(e => res.sendStatus(404));
 });
 

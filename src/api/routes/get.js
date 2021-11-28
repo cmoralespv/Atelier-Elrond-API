@@ -32,7 +32,7 @@ router.get('/reviews/', (req, res) => {
       LIMIT ${count}
       OFFSET ${(page - 1) * count};`)
     .then(data => getReviews(data))
-    .then(results => res.json({
+    .then(results => res.send({
       product_id,
       page, // :(page - 1) * count, - heroku version that doesn't make sense
       count,
@@ -61,7 +61,7 @@ router.get('/reviews/meta', (req, res) => {
         'value', getAverage(id)))
           FROM characteristics
           WHERE product_id = ${product_id}))`)
-    .then(result => res.json(result.rows[0].json_build_object))
+    .then(result => res.send(result.rows[0].json_build_object))
     .catch(e => res.sendStatus(404));
 });
 

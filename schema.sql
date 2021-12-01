@@ -41,3 +41,18 @@ CREATE UNIQUE INDEX reviews_pkey ON public.reviews USING btree (id)
 CREATE UNIQUE INDEX characteristics_pkey ON public.characteristics USING btree (id)
 CREATE UNIQUE INDEX characteristic_reviews_pkey ON public.characteristic_reviews USING btree (id)
 CREATE UNIQUE INDEX reviews_photos_pkey ON public.reviews_photos USING btree (id)
+
+
+CREATE OR REPLACE FUNCTION getPhotos(reviewId integer)
+RETURNS varchar[]
+AS
+$$
+declare photos varchar[];
+
+begin
+	select json_agg(json_build_object('id',id,'url',url)) into photos
+	from reviews_photos
+    where review_id = reviewid;
+    return photos;
+end;
+$$ language plpgsql;

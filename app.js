@@ -26,6 +26,11 @@ const app = express();
 app.use(compression());
 app.use(express.json());
 
+app.use('/loaderio-62fe8680a789a50fd4c8fbfd62409544', (req, res) => {
+  const loaderIOfile = fs.readFileSync('./loaderio-62fe8680a789a50fd4c8fbfd62409544.txt', 'utf-8');
+  res.send(loaderIOfile);
+});
+
 app.use(routes.get);
 app.use(routes.post);
 app.use(routes.put);

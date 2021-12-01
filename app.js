@@ -26,8 +26,8 @@ const app = express();
 app.use(compression());
 app.use(express.json());
 
-app.use('/loaderio-62fe8680a789a50fd4c8fbfd62409544', (req, res) => {
-  const loaderIOfile = fs.readFileSync('./loaderio-62fe8680a789a50fd4c8fbfd62409544.txt', 'utf-8');
+app.use('/loaderio-5c7452623a52615f2c57559e40ee5ddf', (req, res) => {
+  const loaderIOfile = fs.readFileSync('./loaderio-5c7452623a52615f2c57559e40ee5ddf.txt', 'utf-8');
   res.send(loaderIOfile);
 });
 

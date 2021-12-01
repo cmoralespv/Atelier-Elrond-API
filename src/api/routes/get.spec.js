@@ -151,7 +151,7 @@ describe('GET - Metadata', () => {
     expect(recommended.false).toBeDefined();
     expect(typeof characteristics.Fit === 'object').toEqual(true);
     expect(characteristics.Fit.id).toEqual(309);
-    expect(characteristics.Length.value).toEqual('3.0000000000000000');
+    expect(characteristics.Length.value).toEqual('2.0000000000000000');
     expect(characteristics.Comfort).toBeDefined();
     expect(characteristics.Quality.id).toBeDefined();
   });

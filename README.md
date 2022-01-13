@@ -1,6 +1,6 @@
 # Atelier Ratings & Reviews API
 
-![tests](https://github.com/Team-Elrond/ratings-and-reviews/actions/workflows/codecov.yml/badge.svg) [![codecov](https://codecov.io/gh/Team-Elrond/ratings-and-reviews/branch/main/graph/badge.svg?token=dMrAtRTiZj)](https://codecov.io/gh/Team-Elrond/ratings-and-reviews)
+[![codecov](https://codecov.io/gh/Team-Elrond/ratings-and-reviews/branch/main/graph/badge.svg?token=dMrAtRTiZj)](https://codecov.io/gh/Team-Elrond/ratings-and-reviews)
 
 ## Setup
 
